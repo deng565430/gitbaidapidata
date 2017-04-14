@@ -142,18 +142,19 @@ var timer =  setInterval(ajaxI,1000)
           async : false,
           type:'GET',
           success: function(data){
+           // console.log(JSON.parse(data))
            if(!data.data){
-              $('#tests').append(`${data.message}`);
+              $('#tests').append(`${data.message == 1 ? '成功' : '不成功'}`);
               clearInterval(timer);
               return;
             }
             if(data.code ==2 ){
-              $('#tests').append(`${data.message}`);
+              $('#tests').append(`${data.message == 1 ? '成功' : '不成功'}`);
               clearInterval(timer);
               return;
             }
             if(data.code == 1){
-              $('#tests').append(`${data.message}`);
+              $('#tests').append(`${data.message == 1 ? '成功' : '不成功'}`);
                clearInterval(timer);
               return
             }
@@ -467,7 +468,7 @@ function successAjax(data) {
       var datas = data.data.content;
              datas.forEach(function(v,i){
                 if(v.ext == undefined || v.ext.detail_info == undefined  || v.ext.detail_info.point == undefined){
-                  console.log(i)
+                 // console.log(i)
                   v.x = i + '错误';
                   v.y = i + '错误';
                 } else {
@@ -482,14 +483,14 @@ function successAjax(data) {
               async : false,
               data:{data:JSON.stringify(datas)},
               success:function(data){
-                console.log(data)
+                //console.log(data)
                  if(!data || !data.data || data.code == '1' ){
-                    $('#tests').html(`${data.message}`);
+                    $('#tests').html(`${data.message == 1 ? '成功' : '不成功'}`);
                     clearInterval(timer);
                     return
                   }
                   //num+=parseInt(data.num)
-                  $('#tests').append(`<p>${data.message} 本次共存储<span>${data.num}</span>条数据</p>`);
+                  $('#tests').append(`<p>${data.message == 1 ? '成功' : '不成功'} 本次共存储<span>${data.num}</span>条数据</p>`);
                     var tage = document.createDocumentFragment();
                     data.data.forEach(function(v,i){
                      var span = document.createElement("span");

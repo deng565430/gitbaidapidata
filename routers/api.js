@@ -1,15 +1,34 @@
 const express = require('express');
 const request = require('request');
-
+var cache = require('memory-cache');
 var router = express.Router();
 var inMsql = require('./db');
+
+
+
+function fetch(url, callback) {
+	request.head({
+		url: url,
+		timeout: 10000,
+		tunnel: true,
+		gzip: true,
+		proxy: false,
+		followRedirect: false,
+		headers: {
+			'User-Agent': 'request'
+		}
+	}, callback);
+}
+let now = Date.now();
+
+
 
 //统一返回格式
 let responseDate;
 
 
 router.use((req, res, next) => {
-	res.cache(0) //表示不缓存
+	//res.cache(0) //表示不缓存
 	//res.cache(7*24*3600)//设置缓存时间
 	responseDate = {
 		code: 0,
@@ -25,21 +44,24 @@ router.get('/api/data', (req, res, next) => {
 		var wd = `${encodeURI(req.query.wd)}%20${encodeURI(req.query.sc)}` || `${encodeURI(req.query.wd)}`;
 		var c = encodeURI(req.query.c) || '289'; //城市
 		var pn = req.query.pn || 0; //页数
-		var reqUrl = `http://api.map.baidu.com/?qt=s&c=${c}&wd=${wd}&rn=100&pn=${pn}&ie=utf-8&oue=33&fromproduct=jsapi&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`;
+		var reqUrl = `http://api.map.baidu.com/?qt=s&c=289&wd=${wd}&rn=100&pn=${pn}&ie=utf-8&oue=33&fromproduct=jsapi&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`;
 		//http://api.map.baidu.com/?qt=s&c=289&wd=${wd}F&rn=100&ie=utf-8&oue=1&fromproduct=jsapi&res=api&callback=BMap._rd._cbk68860
+		console.log(1)
 	} else if (req.query.point !== undefined) {
 		var wd = encodeURI(req.query.wd) || encodeURI('夜总会'); //搜索内容
 		//var c = encodeURI(req.query.c) || '289'; //城市
 		var ar = encodeURIComponent(req.query.point);
 		var pn = req.query.pn || 0; //页数
 		var reqUrl = `http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=(${ar})&rn=100&pn=${pn}&l=18&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`;
-		//http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=(${ar})&rn=100&pn=${pn}&l=18&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`
+		console.log(2)
+			//http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=(${ar})&rn=100&pn=${pn}&l=18&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`
 
 	} else {
 		var wd = encodeURI(req.query.wd) || encodeURI('夜总会'); //搜索内容
 		var c = encodeURI(req.query.c) || '289'; //城市
 		var pn = req.query.pn || 0; //页数
 		var reqUrl = `http://api.map.baidu.com/?qt=s&c=${c}&wd=${wd}&rn=100&pn=${pn}&ie=utf-8&oue=33&fromproduct=jsapi&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`;
+		console.log(3)
 	}
 
 	console.log(reqUrl)
@@ -53,7 +75,15 @@ router.get('/api/data', (req, res, next) => {
 	//http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=(13484413.45%2C3625465.56%3B13520915.62%2C3642467.49)&pn=${pn}&rn=100&l=18&ie=utf-8&oue=1&fromproduct=jsapi&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C
 	//http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=${ar}&rn=100&pn=${pn}&l=18&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C
 	request({
-		uri: reqUrl
+		uri: reqUrl,
+		timeout: 10000,
+		tunnel: true,
+		gzip: true,
+		proxy: false,
+		followRedirect: false,
+		headers: {
+			'User-Agent': 'request'
+		}
 	}, function(err, response, body) {
 		if (err) {
 			responseDate.code = 2;
@@ -63,6 +93,8 @@ router.get('/api/data', (req, res, next) => {
 		}
 		if (!err && response.statusCode == 200) {
 			console.log(typeof body)
+			
+
 			body = JSON.parse(body);
 			//console.log(body.content)
 			if (body.content == undefined || body.content == null) {
@@ -95,17 +127,17 @@ router.post('/api/data/add', (req, res, next) => {
 
 	if (!data) {
 		responseDate.code = 1;
-		responseDate.message = '没有找到数据';
+		responseDate.message = ' 没有找到数据';
 		res.send(responseDate)
 		return;
 	}
 	list(data, 0, flag);
 	setTimeout(() => {
 		responseDate.code = 0;
-		responseDate.message = '获取成功';
+		responseDate.message = ' 1 ';
 		responseDate.data = data;
-		responseDate.num = `${num}条数据`;
-		
+		responseDate.num = `${num} `;
+
 		res.send(responseDate);
 		return;
 	}, 0)
@@ -233,11 +265,11 @@ function list(data, num, flag) {
 				url: v.url || "",
 				aoi: v.aoi || v.aoi,
 				alias0: v.alias ? String(v.alias) : "",
-				alias1: v.alias ? v.alias[1] : ""//,
-				/*image: v.ext.detail_info.image ? v.ext.detail_info.image : "",
-				phone: v.ext.detail_info.phone ? v.ext.detail_info.phone : "",*/
-				//dipointx: v.ext.detail_info.point ? v.ext.detail_info.point.x : "",
-				//dipointy: v.ext.detail_info.point ? v.ext.detail_info.point.y : ""
+				alias1: v.alias ? v.alias[1] : "" //,
+					/*image: v.ext.detail_info.image ? v.ext.detail_info.image : "",
+					phone: v.ext.detail_info.phone ? v.ext.detail_info.phone : "",*/
+					//dipointx: v.ext.detail_info.point ? v.ext.detail_info.point.x : "",
+					//dipointy: v.ext.detail_info.point ? v.ext.detail_info.point.y : ""
 			}
 			//存入数据库
 		inMsql(list, flag)

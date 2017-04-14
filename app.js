@@ -49,7 +49,7 @@ app.use('/api', require('./routers/api'));
 app.use('/', require('./routers/main'));
 
 //监听http请求
-app.listen(8081,(err) => {
+app.listen(8181,(err) => {
 	if(err) throw err;
-	console.log('链接8081');
+	console.log('链接8181');
 });
