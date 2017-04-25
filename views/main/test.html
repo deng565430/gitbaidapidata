@@ -12,21 +12,21 @@
    <div class="row">
        <div class="col-md-3">
             <h1>地址转换区域</h1>
-            <span style="color:red">(必须输入正确且要转换栏必须为null)</span>
+            
            <div class="form-group"> 
-               <label for="table" >输入表名</label>
+               <label for="table" >输入表名 <span style="color:red">(选择需要转区域的表，包含地址id 地址address 区域dist dist列必须为null)</span></label>
                <input class="form-control" type="text" name="" value="adderss_ext_district_copy" placeholder="输入表名" id="table">
            </div>
              <div class="form-group"> 
-               <label for="database" >输入数据库名</label>
+               <label for="database" >输入数据库名 <span style="color:red">(包含需要转的表的数据库名称)</span></label>
                <input class="form-control" type="text" name="" value="sales_service" placeholder="数据库名" id="database">
            </div>
              <div class="form-group"> 
-               <label for="num" >输入起始id</label>
-              <input class="form-control" type="text" name="" value="10000" placeholder="输入起始id" id="num">
+               <label for="num" >输入起始id <span style="color:red">(表必须包含id)</span></label>
+              <input class="form-control" type="text" name="" value="0" placeholder="输入起始id" id="num">
            </div>
              <div class="form-group" > 
-               <label for="port" >输入端口</label>
+               <label for="port" >输入端口 <span style="color:red">(端口号为连接表的端口)</span></label>
                <input class="form-control" type="text" name="" value="8989" placeholder="输入端口" id="port">
            </div>
            
@@ -41,21 +41,20 @@
        </div>
          <div class="col-md-3">
             <h1>地址转坐标</h1>
-            <span style="color:red">(必须输入正确且要转换栏必须为null)</span>
            <div class="form-group"> 
-               <label for="addressTable" >输入表名</label>
+               <label for="addressTable" >输入表名 <span style="color:red">(选择需要转坐标的表，包含地址id 地址address ，c_x ，c_y，其中c_x ，c_y列必须为null)</span></label>
                <input class="form-control" type="text" name="" value="address_to_xy_copy" placeholder="输入表名" id="addressTable">
            </div>
              <div class="form-group"> 
-               <label for="addressDatabase" >输入数据库名</label>
+               <label for="addressDatabase" >输入数据库名 <span style="color:red">(包含需要转的表的数据库名称)</span></label>
                <input class="form-control" type="text" name="" value="operate_space" placeholder="数据库名" id="addressDatabase">
            </div>
              <div class="form-group"> 
-               <label for="addressNum" >输入起始id</label>
+               <label for="addressNum" >输入起始id <span style="color:red">(表必须包含id)</span></label>
               <input class="form-control" type="text" name="" value="0" placeholder="输入起始id" id="addressNum">
            </div>
              <div class="form-group" > 
-               <label for="addressPort" >输入端口</label>
+               <label for="addressPort" >输入端口 <span style="color:red">(端口号为连接表的端口)</span></label>
                <input class="form-control" type="text" name="" value="8989" placeholder="输入端口" id="addressPort">
            </div>
            
