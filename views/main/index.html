@@ -10,6 +10,10 @@
 </head>
 <body>
 <div class="form-inline" style="display: inline-block; height:400px;padding:10px">
+    <div>
+        <a href="/data" class="btn btn-success">选择坐标转换</a>
+    </div>
+    
     <div class="form-group">
         <h3 for="exampleInputEmail2">模糊搜索:</h3>
         <input type="text" id="suggestId" class="form-control" size="20" style="width:150px;" placeholder="地址"/>
@@ -65,7 +69,7 @@
         <input type="hidden" id="coordinate1" class="form-control" value="13520050.1,3642055.36" size="20"
                style="width:150px;"/>
         <label for="contentText">搜索内容:</label>
-        <input type="text" id="contentText" class="form-control" value="医院" size="20" style="width:150px;"
+        <input type="text" id="contentText" class="form-control" value="酒店式公寓" size="20" style="width:150px;"
                placeholder="搜索内容"/>
         <br/>
         <label for="radius">搜索半径:</label>
@@ -180,10 +184,10 @@
                         return
                     }
 
-                  /*  var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
-                    var data = data.data.replace(reg, '\\\/$2')
+                    /*  var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
+                     var data = data.data.replace(reg, '\\\/$2')
 
-                    data = JSON.parse(data)*/
+                     data = JSON.parse(data)*/
                     //console.log(data)
 
                     successAjax(data.data)
@@ -246,12 +250,12 @@
                         pn = 0;
                         return
                     }
-                   /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
-                    var data = data.data.replace(reg, '\\\/$2')
+                    /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
+                     var data = data.data.replace(reg, '\\\/$2')
 
-                    data = JSON.parse(data)*/
+                     data = JSON.parse(data)*/
                     successAjax(data.data)
-                    if (data.data.content.length < 50  || data.data.content == null) {
+                    if (data.data.content.length < 50 || data.data.content == null) {
                         clearInterval(timer);
                         pn = 0;
                         return;
@@ -270,7 +274,7 @@
             {renderOptions: {map: map, autoViewport: true}});
         local.searchNearby(round, values);
     })
-    //decodeURIComponent('13519050.11%2C3641055.33%3B13521050.1%2C3643055.33')
+    //decodeURIComponent('13517188.71%2C3632016.24%3B13519188.7%2C3634016.31')
 
 
     //可视地图范围内搜索
@@ -355,12 +359,12 @@
                         pn = 0;
                         return;
                     }
-                   /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
-                    var data = data.data.replace(reg, '\\\/$2')
+                    /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
+                     var data = data.data.replace(reg, '\\\/$2')
 
-                    data = JSON.parse(data)*/
+                     data = JSON.parse(data)*/
                     successAjax(data.data)
-                    if (data.data.content.length < 50  || data.data.content == null) {
+                    if (data.data.content.length < 50 || data.data.content == null) {
                         clearInterval(timer);
                         pn = 0;
                         return;
@@ -394,9 +398,11 @@
             alert('请输入搜索半径')
             return;
         }
+
+
         var cText = $('#contentText').val();
-        var point = `${r1 - radius},${r2 - radius};${r1 + radius},${r2 + radius}`;
-        console.log(point)
+
+
 
         var mPoint = new BMap.Point(l1, l2);
         map.enableScrollWheelZoom();
@@ -424,6 +430,14 @@
         map.addOverlay(circle);
         var local = new BMap.LocalSearch(map, {renderOptions: {map: map, autoViewport: true}});
         local.searchNearby(cText, mPoint, radius);
+
+        if (local && local._opts && local._opts.renderOptions && local._opts.renderOptions.map && local._opts.renderOptions.map.mercatorCenter) {
+            var pointx = Number(local._opts.renderOptions.map.mercatorCenter.lng);
+            var pointy = Number(local._opts.renderOptions.map.mercatorCenter.lat);
+            var point = `${pointx - radius},${pointy - radius};${pointx + radius},${pointy + radius}`;
+        } else {
+            var point = `${r1 - radius},${r2 - radius};${r1 + radius},${r2 + radius}`;
+        }
 
 
         var timer = setTimeout(ajaxI, 1000)
@@ -461,11 +475,11 @@
                         pn = 0;
                         return
                     }
-                   /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
-                    var data = data.data.replace(reg, '\\\/$2')
+                    /* var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
+                     var data = data.data.replace(reg, '\\\/$2')
 
-                    data = JSON.parse(data)*/
-                   // console.log(data)
+                     data = JSON.parse(data)*/
+                    // console.log(data)
                     successAjax(data.data)
                     if (data.data.length < 50 || data.data.content == null) {
 

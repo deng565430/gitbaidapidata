@@ -1,40 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-<title>所有POI的查询-地址解析</title>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+    <meta charset="UTF-8">
+    <title>数据转换</title>
+     <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/bootstrap.min.js"></script>
 </head>
 <body>
-<input type="button" onclick="displayPOI();" value="确定" />
-<div style="width:600px;height:340px;border:1px solid gray;float:left;" id="container"></div>
-<div style="width:300px;height:340px;border:1px solid gray;border-left:0;float:left;" id="panel"></div>
+<div style="padding:20px">
+   <div class="row">
+       <div class="col-md-3">
+            <h1>地址转换区域</h1>
+            <span style="color:red">(必须输入正确且要转换栏必须为null)</span>
+           <div class="form-group"> 
+               <label for="table" >输入表名</label>
+               <input class="form-control" type="text" name="" value="adderss_ext_district_copy" placeholder="输入表名" id="table">
+           </div>
+             <div class="form-group"> 
+               <label for="database" >输入数据库名</label>
+               <input class="form-control" type="text" name="" value="sales_service" placeholder="数据库名" id="database">
+           </div>
+             <div class="form-group"> 
+               <label for="num" >输入起始id</label>
+              <input class="form-control" type="text" name="" value="10000" placeholder="输入起始id" id="num">
+           </div>
+             <div class="form-group" > 
+               <label for="port" >输入端口</label>
+               <input class="form-control" type="text" name="" value="8989" placeholder="输入端口" id="port">
+           </div>
+           
+           
+           <div>
+               <button type="button" id="btn" class="btn btn-primary">点击转换</button>
+           </div>
+            <div id="result" style="color:red;">
+           
+            </div>
+            
+       </div>
+         <div class="col-md-3">
+            <h1>地址转坐标</h1>
+            <span style="color:red">(必须输入正确且要转换栏必须为null)</span>
+           <div class="form-group"> 
+               <label for="addressTable" >输入表名</label>
+               <input class="form-control" type="text" name="" value="address_to_xy_copy" placeholder="输入表名" id="addressTable">
+           </div>
+             <div class="form-group"> 
+               <label for="addressDatabase" >输入数据库名</label>
+               <input class="form-control" type="text" name="" value="operate_space" placeholder="数据库名" id="addressDatabase">
+           </div>
+             <div class="form-group"> 
+               <label for="addressNum" >输入起始id</label>
+              <input class="form-control" type="text" name="" value="0" placeholder="输入起始id" id="addressNum">
+           </div>
+             <div class="form-group" > 
+               <label for="addressPort" >输入端口</label>
+               <input class="form-control" type="text" name="" value="8989" placeholder="输入端口" id="addressPort">
+           </div>
+           
+           
+           <div>
+               <button type="button" id="addressBtn" class="btn btn-primary">点击转换</button>
+           </div>
+            <div id="addressResult" style="color:red;">
+           
+            </div>
+            
+       </div>
+        <div class="col-md-3">
+           
+       </div>
+        <div class="col-md-3">
+           
+       </div>
+      
+   </div>
+</div>
+   
+   
+   <script>
+       $('#btn').on('click',function() {
+
+           var table = $('#table').val();
+           var num = $('#num').val();
+           var database = $('#database').val();
+           var port = $('#port').val();
+           if(table =='' || num =='' || database == '' || port == '') {
+            alert('请输入完整内容')
+            return
+           }
+           $.ajax({
+            url:'/list/data',
+            type:'GET',
+            data:{
+                table:table,
+                num:num,
+                database:database,
+                port:port
+            },
+            success:function(data) {
+                if(data && data.msg) {
+
+                  $('#result').html(data.msg)
+                }
+            }
+           })
+       })
+
+
+
+        $('#addressBtn').on('click',function() {
+
+           var table = $('#addressTable').val();
+           var num = $('#addressNum').val();
+           var database = $('#addressDatabase').val();
+           var port = $('#addressPort').val();
+           if(table =='' || num =='' || database == '' || port == '') {
+            alert('请输入完整内容')
+            return
+           }
+           $.ajax({
+            url:'/list/address',
+            type:'GET',
+            data:{
+                table:table,
+                num:num,
+                database:database,
+                port:port
+            },
+            success:function(data) {
+                if(data && data.msg) {
+
+                  $('#addressResult').html(data.msg)
+                }
+            }
+           })
+       })
+
+   </script>
 </body>
 </html>
-<script type="text/javascript">
-var map = new BMap.Map("container");
-var mPoint = new BMap.Point(121.34253, 31.203224);
-map.centerAndZoom(mPoint, 16);
-map.enableScrollWheelZoom();        //启用滚轮缩放
-
-var mOption = {
-    poiRadius : 2000,           //半径为1000米内的POI,默认100米
-    numPois : 50                //列举出50个POI,默认10个
-}
-var myGeo = new BMap.Geocoder();        //创建地址解析实例
-function displayPOI(){
-    map.addOverlay(new BMap.Circle(mPoint,1000));        //添加一个圆形覆盖物
-    myGeo.getLocation(mPoint,
-        function mCallback(rs){
-            var allPois = rs.surroundingPois;       //获取全部POI（该点半径为100米内有6个POI点）
-            console.log(rs.surroundingPois)
-            for(i=0;i<allPois.length;++i){
-                document.getElementById("panel").innerHTML += "<p style='font-size:12px;'>" + (i+1) + "、" + allPois[i].title + ",地址:" + allPois[i].address + "</p>";
-                map.addOverlay(new BMap.Marker(allPois[i].point));                
-            }
-        },mOption
-    );
-}
-
-
-</script>

@@ -5,21 +5,6 @@ var inMsql = require('./db');
 var router = express.Router();
 
 
-/*
- function fetch(url, callback) {
- request.head({
- url: url,
- timeout: 10000,
- tunnel: true,
- gzip: true,
- proxy: false,
- followRedirect: false,
- headers: {
- 'User-Agent': 'request'
- }
- }, callback);
- }
- let now = Date.now();*/
 
 
 let responseDate;
