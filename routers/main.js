@@ -22,15 +22,15 @@ router.get('/list/data', (req, res, next) => {
     var table = req.query.table;
     var num = req.query.num;
     var database = req.query.database;
-    var port = req.query.port;
-    if (table == '' || num == '' || database == '' || port == '') {
+   // var port = req.query.port;
+    if (table == '' || num == '' || database == '' ) {
         res.send({
             msg: '请输入完整数据',
             code: 0
         })
         return;
     }
-    unload(table, num, database, port)
+    unload(table, num, database)
     res.send({
         msg: '正在转换',
         code: 0
@@ -42,8 +42,8 @@ router.get('/list/address', (req, res, next) => {
     var table = req.query.table;
     var num = req.query.num;
     var database = req.query.database;
-    var port = req.query.port;
-    if (table == '' || num == '' || database == '' || port == '') {
+    //var port = req.query.port;
+    if (table == '' || num == '' || database == '' ) {
         res.send({
             msg: '请输入完整数据',
             code: 0

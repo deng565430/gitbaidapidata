@@ -1,10 +1,10 @@
-function addressXY(table, num, database, port) {
+function addressXY(table, num, database) {
     var _ = require('underscore'),
         fs = require("fs"),
         mysql = require('mysql'),
         dataConfig = {
             host: 'localhost',
-            port: port || '8989',
+            port: '8989',
             //host     : '10.161.168.138',
             //port     : '3306',
             user: 'developer',
