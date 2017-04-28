@@ -1,4 +1,4 @@
-function addressXY(table, num, database) {
+function addressXY(table, num, database, resDate) {
     var _ = require('underscore'),
         fs = require("fs"),
         mysql = require('mysql'),
@@ -9,7 +9,7 @@ function addressXY(table, num, database) {
             //port     : '3306',
             user: 'developer',
             password: 'gdas.developer',
-            database: database|| 'operate_space',
+            database: database || 'operate_space',
             waitForConnections: true
         },
         //table = "dim_env",  //转换地址表
@@ -26,8 +26,13 @@ function addressXY(table, num, database) {
 
     function getDBData(_count, _amount) {
         connection = mysql.createConnection(dataConfig);
-        connection.query("SELECT * FROM operate_space." + table + " where c_x is null and id>="+ num +" LIMIT ?,?;", [_count, _amount], function(err, result) {
-            if (err) throw err;
+        connection.query(`SELECT distinct address FROM ${database}.${table} where c_x is null LIMIT ?,?;`, [_count, _amount], function(err, result) {
+            if (err) {
+                resDate.code = 1;
+                resDate.message = '数据库连接错误，请核实对应参数是否正确';
+                console.log(err)
+                return
+            }
             //console.log(start * amount);
             if (!!result && !!result.length) {
                 currentLength = result.length;
@@ -49,7 +54,7 @@ function addressXY(table, num, database) {
         //    if(!!user) {
         _.each(userList, function(user, key, list) {
             console.log(user.id)
-            var url = 'http://api.map.baidu.com/geocoder/v2/?address=' + encodeURIComponent(user.address) + '&city=%E4%B8%8A%E6%B5%B7%E5%B8%82&output=json&ak=' + akList[akIndex];
+            var url = `http://api.map.baidu.com/geocoder/v2/?address=${encodeURIComponent(user.address)}&city=${encodeURIComponent('全国')}&output=json&ak=${akList[akIndex]}`;
             // akIndex++;
             // akIndex > 1 ? akIndex=0 : akIndex;
             //console.log(url)
@@ -75,9 +80,14 @@ function addressXY(table, num, database) {
                                 //if(!axis.message) {
                                 //resultList.push([user.tel, user.name,user.address,user.road,user.num,lat, lng]);
                                 var conn = mysql.createConnection(dataConfig)
-                                conn.query("UPDATE operate_space." + table + " SET c_x = '" + lat + "', c_y = '" + lng + "' where id =" + user.id + ";", function(err, result) {
-                                        if (err) console.log("id: " + user.id + " error.")
-                                        console.log("id: " + user.id + " success.");
+                                conn.query(`UPDATE ${database}.${table} SET c_x = '${lat}', c_y = '${lng}' where address = '${user.address}';`, function(err, result) {
+                                        if (err) {
+                                            resDate.code = 2;
+                                            resDate.message = '服务器内部错误';
+                                            console.log("id: " + user.id + " error.")
+                                            return
+                                        }
+                                        console.log("address: " + user.address + " success.");
                                         conn.end();
                                     })
                                     //}else {
@@ -87,7 +97,10 @@ function addressXY(table, num, database) {
                             }
 
                         } catch (e) {
-                            console.log(e);
+                            resDate.code = 2;
+                            resDate.message = '服务器内部错误';
+                            console.log(err)
+                            return
                         }
                     });
 
@@ -144,4 +157,4 @@ function addressXY(table, num, database) {
 
 
 }
-module.exports =  addressXY;
+module.exports = addressXY;
