@@ -48,6 +48,8 @@ router.get('/list/data', (req, res, next) => {
     }
     unload(table, num, database, resDate)
     setTimeout(function() {
+        resDate.code = 0;
+        resDate.message = '正在转换。。。';
         res.send(resDate)
     }, 500)
 });
@@ -64,8 +66,10 @@ router.get('/list/address', (req, res, next) => {
         res.send(resDate)
         return;
     }
-    addressXY(table, num, database,resDate)
+    addressXY(table, num, database, resDate)
     setTimeout(function() {
+        resDate.code = 0;
+        resDate.message = '正在转换。。。';
         res.send(resDate)
     }, 500)
 

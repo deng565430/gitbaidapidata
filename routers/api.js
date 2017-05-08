@@ -21,8 +21,17 @@ router.use((req, res, next) => {
     next();
 })
 
+
 router.get('/api/data', (req, res, next) => {
     //console.log(req.query);
+
+    //ÉèÖÃ¿çÓòÇëÇó
+   /*      res.header("Access-Control-Allow-Origin", "*");
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    res.send('123344')
+    return*/
 
     if (req.query.sc !== undefined) {
         var wd = `${encodeURI(req.query.wd)}%20${encodeURI(req.query.sc)}` || `${encodeURI(req.query.wd)}`;
@@ -32,7 +41,7 @@ router.get('/api/data', (req, res, next) => {
         //http://api.map.baidu.com/?qt=s&c=289&wd=${wd}F&rn=100&ie=utf-8&oue=1&fromproduct=jsapi&res=api&callback=BMap._rd._cbk68860
         console.log(1)
     } else if (req.query.point !== undefined) {
-        var wd = encodeURI(req.query.wd) || encodeURI('å¤œæ€»ä¼š');
+        var wd = encodeURI(req.query.wd) || encodeURI('Ò¹×Ü»á');
         //var c = encodeURI(req.query.c) || '289';
         var ar = encodeURIComponent(req.query.point);
         var pn = req.query.pn || 0;
@@ -41,7 +50,7 @@ router.get('/api/data', (req, res, next) => {
         //http://api.map.baidu.com/?qt=bd&c=289&wd=${wd}&ar=(${ar})&rn=100&pn=${pn}&l=18&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`
 
     } else {
-        var wd = encodeURI(req.query.wd) || encodeURI('å¤œæ€»ä¼š');
+        var wd = encodeURI(req.query.wd) || encodeURI('Ò¹×Ü»á');
         var c = encodeURI(req.query.c) || '289';
         var pn = req.query.pn || 0;
         var reqUrl = `http://api.map.baidu.com/?qt=s&c=${c}&wd=${wd}&rn=100&pn=${pn}&ie=utf-8&oue=1&fromproduct=jsapi&res=api&ak=Uszxk0qk4kpamOedprWEuNDG90IRHh7C`;
@@ -49,7 +58,7 @@ router.get('/api/data', (req, res, next) => {
     }
 
     console.log(reqUrl)
-    console.log('å¼€å§‹' + (new Date()))
+    console.log('¿ªÊ¼' + (new Date()))
     var flag = true;
 
     //console.log(reqUrl);
@@ -76,7 +85,7 @@ router.get('/api/data', (req, res, next) => {
             return;
         }
         if (!err && response.statusCode == 200) {
-            // var html = iconv.decode(body, 'gb2312');     //è¿™é‡Œbodyæ˜¯ç›´æ¥æ‹¿åˆ°çš„æ˜¯Bufferç±»å‹çš„æ•°æ®ï¼Œå¯ä»¥ç›´æ¥è§£ç ã€‚
+            // var html = iconv.decode(body, 'gb2312');     //ÕâÀïbodyÊÇÖ±½ÓÄÃµ½µÄÊÇBufferÀàĞÍµÄÊı¾İ£¬¿ÉÒÔÖ±½Ó½âÂë¡£
             var reg = /(\\)([\u4E00-\u9FA5\uF900-\uFA2D])/g;
             var data = body.replace(reg, '\\\/$2')
 
@@ -86,7 +95,7 @@ router.get('/api/data', (req, res, next) => {
             //console.log(body.content)
             /*	if (body.content == undefined || body.content == null) {
              responseDate.code = 1;
-             responseDate.message = 'æ²¡æœ‰æ‰¾åˆ°æ•°æ®';
+             responseDate.message = 'Ã»ÓĞÕÒµ½Êı¾İ';
              res.send(responseDate)
              return;
              }*/
@@ -98,7 +107,7 @@ router.get('/api/data', (req, res, next) => {
             responseDate.data = data;
             //responseDate.num = `${body.conntent.length}`;
             res.send(responseDate);
-            console.log('è·å–èµ„æº' + (new Date()))
+            console.log('»ñÈ¡×ÊÔ´' + (new Date()))
             return;
 
 
@@ -128,7 +137,7 @@ router.post('/api/data/add', (req, res, next) => {
         responseDate.num = `${num} `;
 
         res.send(responseDate);
-        console.log('ç»“æŸ' + (new Date()))
+        console.log('½áÊø' + (new Date()))
         return;
     }, 300)
 })
@@ -170,7 +179,7 @@ router.post('/user/data', (req, res, next) => {
 
 
         setTimeout(() => {
-            responseDate.message = 'æˆåŠŸ';
+            responseDate.message = '³É¹¦';
             responseDate.num = `${num}`;
             res.json(responseDate);
             return;
@@ -212,7 +221,7 @@ router.post('/user/onedata', (req, res, next) => {
 
 
         setTimeout(() => {
-            responseDate.message = 'æˆåŠŸ';
+            responseDate.message = '³É¹¦';
             responseDate.num = `${num}`;
             res.json(responseDate);
             return;
@@ -267,7 +276,7 @@ function list(data, num, flag) {
             }
         })
     }
-    console.log('å­˜å…¥æ•°æ®åº“' + (new Date()))
+    console.log('´æÈëÊı¾İ¿â' + (new Date()))
     return this.num
 }
 

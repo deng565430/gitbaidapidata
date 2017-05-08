@@ -19,14 +19,14 @@ function addressXY(table, num, database, resDate) {
         http = require('http'),
         start = 0,
         amount = 100,
-        num = num || 0,
+        num = num || 0,     
         currentLength, is302, akIndex = 0,
         akList = ['w2jj1ik0RhVs1d5AHbOQzafvUaq0axd5', 'eznhFjP1UwdytWCvRlUozrr1L8t9qxfd', 'INqNWCQRj4DedVFzGoT58MIu', 'Hxy0IfBb8rwtkrVmg4mnoo8kmtxcyiFQ', 'Vz8tRKQRAdilOHjg9oxWrSc6DIIr9bMd', 'ZGlTTVKgUvS6OfLXSDKsjDGjtNUo3vp8', 'vi1ebWt0vGKG3OPo6x78YM5akeO8UKM8', 'H507T7reF1YuTjIr9v1An5NUovyRq7UF', '3shdTOBSIUXUmEU88ASY8tsMM5UWXyUX', 'WWKDRG9FK3Ntkpy5wlSnpAAIzr1H1HU5'];
     getDBData(start, amount);
 
     function getDBData(_count, _amount) {
         connection = mysql.createConnection(dataConfig);
-        connection.query(`SELECT distinct address FROM ${database}.${table} where c_x is null LIMIT ?,?;`, [_count, _amount], function(err, result) {
+        connection.query(`SELECT distinct address FROM ${database}.${table} where  c_x is null LIMIT ?,?;`, [_count, _amount], function(err, result) {
             if (err) {
                 resDate.code = 1;
                 resDate.message = '数据库连接错误，请核实对应参数是否正确';

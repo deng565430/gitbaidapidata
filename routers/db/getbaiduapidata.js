@@ -80,38 +80,7 @@ function unload(table, num, database, resDate) {
                                 changeAk = true;
                             } else {
                                 if (changeAk) return;
-                                // var lat = !!axis.result&&!!axis.result.location ? ~~(parseFloat(axis.result.location.lat) * 1000) / 1000 : "未知坐标";
-                                // var lng = !!axis.result&&!!axis.result.location ? ~~(parseFloat(axis.result.location.lng) * 1000) / 1000 : "未知坐标";
-                                // var lat = !!axis.result && !!axis.result.location ? axis.result.location.lat : "未知坐标";
-                                //var lng = !!axis.result && !!axis.result.location ? axis.result.location.lng : "未知坐标";
-                                /* if (axis.result && axis.result.length > 0) {
-                                    if (axis.result[0].district != '' || axis.result[0].district != undefined) {
-                                        var dist = !!axis.result && !!axis.result.length > 0 ? axis.result[0].district : "";
-                                    } else if (axis.result[1].district != '' || axis.result[1].district != undefined) {
-                                        var dist = !!axis.result && !!axis.result.length > 0 ? axis.result[1].district : "";
-                                    } else if (axis.result[2].district != '' || axis.result[2].district != undefined) {
-                                        var dist = !!axis.result && !!axis.result.length > 0 ? axis.result[2].district : "";
-                                    } else {
-                                        var dist = "";
-                                    }
-                                }
-
-                                if(dist == undefined) {
-                                    dist = ''
-                                }
-                                var conn = mysql.createConnection(dataConfig)
-
-                                conn.query(`UPDATE ${database}.${table} SET district  = '${dist}' where address = '${user.address}';`, function(err, result) {
-                                        if (err) throw err //console.log("id: " + user.id + " error.")
-                                            //console.log("id: " + user.id + " success.");
-                                        conn.end();
-                                    })
-                                    //}else {
-                                    //    console.log('error address rows tel: ' + user.tel);
-                                    //getBaiduAxis(_.rest(userList));
-                                    //} 
-
-*/
+                              
 
                                 //2、如果转化不成功 开启后面的坐标转化 前面部分注释
 
